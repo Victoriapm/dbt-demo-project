@@ -1,0 +1,45 @@
+version: 2
+
+
+sources:
+  - name: tpch
+    description: Welcome to the dbt Labs demo dbt project! We use the [TPCH dataset](https://docs.snowflake.com/en/user-guide/sample-data-tpch.html) to create a sample project to emulate what a production project might look like!
+    database: raw
+    schema: tpch_sf001
+    tables:
+      - name: customer
+        freshness: 
+          warn_after: {count: 12, period: hour}
+        description: main customer table
+        columns:
+          - name: c_custkey
+            description: unique customer key
+            tests:
+              - unique:
+                  severity: warn
+              - not_null:
+                  severity: warn
+          - name: c_name
+            description: customer id
+          - name: c_address
+            description: address of the customer
+          - name: c_nationkey
+            description: foreign key to stg_tpch_nations
+          - name: c_phone
+            description: phone number of the customer
+          - name: c_acctbal
+            description: raw account balance 
+          - name: c_mktsegment
+            description: market segment of the customer
+  - name: dev
+    description: Welcome to the dbt Labs demo dbt project! We use the [TPCH dataset](https://docs.snowflake.com/en/user-guide/sample-data-tpch.html) to create a sample project to emulate what a production project might look like!
+    database: analytics
+    schema: dbt_vperezmola
+    tables:
+      - name: orders
+        description: main order tracking table
+        freshness: # make this a warning as this is static data
+          warn_after: {count: 6, period: hour}
+          error_after: {count: 12, period: hour}
+        loaded_at_field: o_ordertimestamp
+      
