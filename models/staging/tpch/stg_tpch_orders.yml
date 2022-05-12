@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: stg_tpch_orders
+    description: staging layer for orders data
+    columns:
+      - name: order_key
+        description: primary key of the model
+      - name: customer_key
+        description: foreign key to stg_tpch_customers
+      - name: status_code
+        description: status of the order
+      - name: total_price
+        description: raw price
+      - name: order_date
+        description: date the order was made
+      - name: priority_code
+        description: code associated with the order
+      - name: clerk_name
+        description: id of the clerk
+      - name: ship_priority
+        description: numeric representation of the shipping priority, zero being the default
+      - name: comment
+        description: '{{ doc("comment") }}'
