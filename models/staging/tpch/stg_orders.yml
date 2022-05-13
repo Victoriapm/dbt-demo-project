@@ -1,21 +1,42 @@
 version: 2
 
 models:
-  - name: stg_tpch_orders
+  - name: stg_orders
     description: staging layer for orders data
+    tests: 
+      - unique:
+          column_name: "(order_key || customer_key)"
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_key
+            - customer_key
     columns:
       - name: order_key
         description: primary key of the model
+        tests:
+          - unique
+          - not_null
       - name: customer_key
         description: foreign key to stg_tpch_customers
+        tests:
+          - relationships:
+              to: ref('customers')
+              field: customer_key
       - name: status_code
         description: status of the order
       - name: total_price
         description: raw price
+        tests:
+          - positive_number
       - name: order_date
         description: date the order was made
       - name: priority_code
         description: code associated with the order
+        tests:
+          - accepted_values: 
+              values: ['1-URGENT','2-HIGH','3-MEDIUM','4-NOT SPECIFIED','5-LOW']
+              config:
+                where: "order_date < current_date()"
       - name: clerk_name
         description: id of the clerk
       - name: ship_priority
