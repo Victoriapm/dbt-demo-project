@@ -1,12 +1,8 @@
-{{
-    config(
-        enabled=true,
-        severity='error',
-        tags = ['finance']
-    )
-}}
 
-with orders as ( select * from {{ ref('stg_tpch_orders') }} )
+with orders as ( select * from {{ ref('stg_tpch_orders') }} 
+where order_date > current_date()
+limit 1000
+)
 
 select *
 from   orders 

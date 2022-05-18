@@ -48,6 +48,7 @@ models:
   tpch:
     staging:
       +materialized: view
+      +required_tests: {"unique.*|not_null": 1}
 
     marts:
       core:
