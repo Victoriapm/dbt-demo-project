@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: orders_grouped
+    description: "This model has the orders grouped by order key with the total sum"
+    columns:
+      - name: o_orderkey
+        description: "this is the PK"
+        tests: 
+            - unique
+            - not_null
+
+      - name: o_custkey
+        description: "Foreign key"
+
+      - name: total_price
+        description: "total sum"
